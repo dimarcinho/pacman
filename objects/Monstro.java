@@ -1,7 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package objects;
 
 import java.awt.Graphics;
@@ -25,7 +22,7 @@ public class Monstro extends GlobalPosition {
         x += velX;
         y += velY;
         
-        //Basic collision with walls        
+        //Basic collision with walls
         if(x <= 0){
             velX = -velX;
         }        
