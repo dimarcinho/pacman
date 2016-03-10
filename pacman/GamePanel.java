@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+import objects.DotController;
 import objects.Monstro;
 import objects.Player;
 
@@ -36,30 +37,29 @@ public class GamePanel extends JPanel implements ActionListener {
     public Player p;
     public Monstro m;
     
-    public Maze maze = new Maze();
+    public Maze maze;
+    public DotController dc;
     
     public GamePanel(){        
         
         setFocusable(true);
         
-        t = new Timer(10, this);
+        t = new Timer(20, this);
         t.start();
         
         p = new Player(100, 350);
         m = new Monstro(100, 100);
+        
+        maze = new Maze();
+        dc = new DotController();
+        maze.createObjects(dc);
         
         addKeyListener(new KeyInput(p));
         
         init();
     }
     
-    public void init(){        
-        
-    }
-    
-    public void drawMaze(Graphics2D g2d){
-        maze.draw(g2d);
-    }
+    public void init(){}    
     
     public void paint(Graphics g){        
         dbImage = createImage(getWidth(),getHeight());
@@ -68,16 +68,14 @@ public class GamePanel extends JPanel implements ActionListener {
         g.drawImage(dbImage,0,0,this);
     }
     
-    
     public void paintComponent(Graphics g){
         //super.paintComponent(g);        
         Graphics2D g2d = (Graphics2D) g;
         //g2d.drawImage(getBackgroundImage(),0,0,this);
         maze.draw(g2d);
+        dc.draw(g2d);
         p.draw(g2d);
         m.draw(g2d);
-        
-        
     }
     
     public Image getBackgroundImage(){
@@ -90,6 +88,7 @@ public class GamePanel extends JPanel implements ActionListener {
         p.update();
         m.update();
         maze.update();
+        dc.eatDot(p);
         
         repaint();
     }
