@@ -26,5 +26,6 @@ public class Game {
         f.setVisible(true);
         f.setTitle("PacMan");
         f.setBackground(Color.black);
+
     }
 }

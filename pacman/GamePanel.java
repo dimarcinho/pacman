@@ -19,8 +19,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 import objects.DotController;
+import objects.GateController;
 import objects.Monstro;
 import objects.Player;
+import objects.WallController;
 
 public class GamePanel extends JPanel implements ActionListener {
     
@@ -39,20 +41,26 @@ public class GamePanel extends JPanel implements ActionListener {
     
     public Maze maze;
     public DotController dc;
+    public WallController wc;
+    public GateController gc;
     
-    public GamePanel(){        
+    public GamePanel(){
         
         setFocusable(true);
         
         t = new Timer(20, this);
         t.start();
         
-        p = new Player(100, 350);
-        m = new Monstro(100, 100);
+        p = new Player(240, 465);
+        m = new Monstro(100, 140);
         
         maze = new Maze();
         dc = new DotController();
+        wc = new WallController();
+        gc = new GateController();
         maze.createObjects(dc);
+        //maze.createWalls(wc);
+        maze.createGates(gc);
         
         addKeyListener(new KeyInput(p));
         
@@ -76,6 +84,7 @@ public class GamePanel extends JPanel implements ActionListener {
         dc.draw(g2d);
         p.draw(g2d);
         m.draw(g2d);
+        //gc.draw(g2d);
     }
     
     public Image getBackgroundImage(){
@@ -89,6 +98,9 @@ public class GamePanel extends JPanel implements ActionListener {
         m.update();
         maze.update();
         dc.eatDot(p);
+        //wc.collision(p);
+        
+        gc.collision(p);
         
         repaint();
     }
