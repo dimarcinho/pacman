@@ -6,7 +6,6 @@ package img;
 
 import java.awt.image.BufferedImage;
 
-
 public class SpriteSheet {
  
     private BufferedImage sheet;
@@ -17,5 +16,8 @@ public class SpriteSheet {
     
     public BufferedImage crop(int col, int row, int w, int h){
         return sheet.getSubimage(18*col, 18*row, w, h);
-    }    
+    }
+    public BufferedImage crop2(int col, int row, int w, int h){
+        return sheet.getSubimage(col, row, w, h);
+    }
 }
