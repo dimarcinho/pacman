@@ -20,7 +20,7 @@ public class Dot extends GlobalPosition {
     
     public void draw(Graphics g){
         g.setColor(Color.yellow);
-        g.fillRect(this.x+9, this.y+6, 4, 4);
+        g.fillRect(this.x+9, this.y+9, 3, 3);
     }
     
     public Rectangle getBounds(){

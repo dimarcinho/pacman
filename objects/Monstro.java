@@ -10,9 +10,9 @@ import pacman.GlobalPosition;
 
 public class Monstro extends GlobalPosition {
     
-    private String fileName = "/img/monstro_teste.png";
+    private String fileName = "/img/Blinky_teste.gif";
     
-    int velX = 3, velY = 0;
+    int velX = 2, velY = 0;
     
     public Monstro(int x, int y){
         super(x,y);
@@ -23,16 +23,16 @@ public class Monstro extends GlobalPosition {
         y += velY;
         
         //Basic collision with walls
-        if(x <= 0){
+        if(x <= 18){
             velX = -velX;
         }        
         if(y <= 0){
             velY = -velY;
         }        
-        if(x > Game.WIDTH - 32){
+        if(x > Game.WIDTH - 25 - 18){
             velX = -velX;
         }        
-        if(y > Game.HEIGHT - 32){
+        if(y > Game.HEIGHT - 25){
             velY = -velY;
         }
     }
