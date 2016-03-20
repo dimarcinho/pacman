@@ -1,8 +1,6 @@
 
 package objects;
 
-import img.ImageLoader;
-import img.SpriteSheet;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -39,7 +37,7 @@ public class Player extends GlobalPosition {
         startFrame = 8;
         endFrame = startFrame + 3;
         frameNumber = startFrame;
-        frameSpeed = 4;
+        frameSpeed = 4; //quanto maior, mais lento
         
         preVelX = 0;
         preVelY = 0;
@@ -54,22 +52,11 @@ public class Player extends GlobalPosition {
         x += velX;
         y += velY;
         
-        //Basic collision with walls
-        /*
-        if(x <= 0){
-            x = 0;
-        }        
-        if(y <= 0){
-            y = 0;
-        }        
-        if(x > Game.WIDTH-37){
-            x = Game.WIDTH-37;
-        }        
-        if(y > Game.HEIGHT-2*32-3){
-            y = Game.HEIGHT-2*32-3;
-        }
-         * 
-         */
+        //passagem pelo túnel
+        if(x < -35 && y > 300 && y < 310)
+            x = 494;        
+        if(x > 510 && y > 300 && y < 310)
+            x = -19;        
         
         this.Animation();
     }
@@ -213,6 +200,7 @@ public class Player extends GlobalPosition {
         g2d.setColor(Color.red);
         //g2d.drawRect(this.getBounds().x, this.getBounds().y, this.getBounds().width, this.getBounds().height);
         //g2d.drawRect(this.getCenterBounds().x, this.getCenterBounds().y, this.getCenterBounds().width, this.getCenterBounds().height);
+        g2d.drawString("("+this.x+","+this.y+")", 100, 30);
     }
     
     public Image getPlayerImage(){
@@ -236,7 +224,7 @@ public class Player extends GlobalPosition {
             counterSS = 0;
         }else {
             counterSS++;
-        }
+        }   
     }
     
     public Rectangle getBounds(){
