@@ -96,25 +96,42 @@ public class Player extends GlobalPosition {
         
     }
     
-    public void collisionGate(Gate gate){
-        
-        velX = preVelX;
-        velY = preVelY;      
+    public void collisionGate(Gate gate){     
         
         if(gate.up == false && velY < 0){
             velY = 0;
+        }
+        
+        if(gate.up == true && preVelY < 0){
+            velY = preVelY;
+            velX = 0;
         }
         
         if(gate.down == false && velY > 0){
             velY = 0;
         }
         
+        if(gate.down == true && preVelY > 0){
+            velY = preVelY;
+            velX = 0;
+        }
+        
         if(gate.left == false && velX < 0){
             velX = 0;
         }
         
+        if(gate.left == true  && preVelX < 0){
+            velX = preVelX;
+            velY = 0;
+        }
+        
         if(gate.right == false && velX > 0){
-            velX = 0;
+            velX = 0;            
+        }
+        
+        if(gate.right == true  && preVelX > 0){
+            velX = preVelX;
+            velY = 0;
         }
         
           
