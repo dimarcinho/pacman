@@ -1,9 +1,9 @@
 
 package pacman;
 
-import img.ImageLoader;
-import img.Maze;
-import img.SpriteSheet;
+import objects.ImageLoader;
+import objects.Maze;
+import objects.SpriteSheet;
 import input.KeyInput;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -20,9 +20,10 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 import objects.DotController;
 import objects.GateController;
-import objects.Monstro;
+import objects.Ghost;
+import objects.PillController;
 import objects.Player;
-import objects.WallController;
+
 
 public class GamePanel extends JPanel implements ActionListener {
     
@@ -33,16 +34,16 @@ public class GamePanel extends JPanel implements ActionListener {
     private Graphics dbg;    
     
     public ImageLoader i = new ImageLoader();
-    public SpriteSheet ss = new SpriteSheet(i.load("maze_spritesheet2.png"));
+    public SpriteSheet ss = new SpriteSheet(i.load("../img/maze_spritesheet2.png"));
     public Image imgTest;
     
-    public Player p;
-    public Monstro m;
+    public Player p;    
+    public Ghost Blinky, Pinky, Inky, Clyde;
     
     public Maze maze;
-    public DotController dc;
-    public WallController wc;
+    public DotController dc;    
     public GateController gc;
+    public PillController pc;
     
     public GamePanel(){
         
@@ -51,16 +52,17 @@ public class GamePanel extends JPanel implements ActionListener {
         t = new Timer(20, this);
         t.start();
         
-        p = new Player(240, 465);
-        m = new Monstro(100, 140);
-        
         maze = new Maze();
-        dc = new DotController();
-        wc = new WallController();
+        dc = new DotController();        
         gc = new GateController();
-        maze.createObjects(dc);
-        //maze.createWalls(wc);
-        maze.createGates(gc);
+        pc = new PillController();
+        maze.createDots(dc);
+        maze.createPills(pc);        
+        maze.createGates(gc);   
+        
+        
+        p = new Player(240, 465);        
+        Blinky = new Ghost(240, 250);//240,250
         
         addKeyListener(new KeyInput(p));
         
@@ -76,15 +78,13 @@ public class GamePanel extends JPanel implements ActionListener {
         g.drawImage(dbImage,0,0,this);
     }
     
-    public void paintComponent(Graphics g){
-        //super.paintComponent(g);        
-        Graphics2D g2d = (Graphics2D) g;
-        //g2d.drawImage(getBackgroundImage(),0,0,this);
-        maze.draw(g2d);
-        dc.draw(g2d);
-        p.draw(g2d);
-        m.draw(g2d);
-        //gc.draw(g2d);
+    public void paintComponent(Graphics g){        
+        maze.draw(g);
+        dc.draw(g);
+        pc.draw(g);
+        p.draw(g);        
+        Blinky.draw(g);
+        gc.draw(g);
     }
     
     public Image getBackgroundImage(){
@@ -94,13 +94,14 @@ public class GamePanel extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {        
-        p.update();
-        m.update();
+        p.update();        
+        Blinky.update();
         maze.update();
         dc.eatDot(p);
-        //wc.collision(p);
-        
+        pc.eatPill(p);
         gc.collision(p);
+        //Blinky.chase(p);
+        gc.collision(Blinky);
         
         repaint();
     }
