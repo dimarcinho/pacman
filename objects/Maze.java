@@ -15,8 +15,7 @@ import objects.Gate;
 import objects.GateController;
 import objects.Pill;
 import objects.PillController;
-import objects.Wall;
-import objects.WallController;
+
 
 
 public class Maze {
@@ -96,30 +95,6 @@ public class Maze {
 
             }            
         }     
-    }
-    
-    public void createWalls(WallController wc){
-        
-        for(int k=0; k < maze.size(); k++){
-
-        tempLine = maze.get(k);
-
-            for(int j = 0; j < 28; j++){
-
-                if(tempLine.substring(2*j, 2*j+2).equals("dd")){
-                    //não fazer nada
-                } else if(tempLine.substring(2*j, 2*j+2).equals("up")){
-                    //não fazer nada
-                } else if(tempLine.substring(2*j, 2*j+2).equals("xx")){
-                    //não fazer nada
-                } else {
-                    xSS = Integer.parseInt(tempLine.substring(2*j, 2*j+1));
-                    ySS = Integer.parseInt(tempLine.substring(2*j+1, 2*j+2));                    
-                    //g2d.drawImage(ss.crop(xSS, ySS, 18, 18), j*18, (k+3)*18, null);
-                    wc.addWall(new Wall(j*18, (k+3)*18));
-                }
-            }            
-        }    
     }
     
     public void createGates(GateController gc){

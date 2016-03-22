@@ -27,18 +27,17 @@ public class GateController {
         
         for(int i = 0; i < gateList.size(); i++){
             g.setColor(Color.red);
-            g.fillRect(gateList.get(i).x+7, gateList.get(i).y+7, 3, 3);
+            //g.fillRect(gateList.get(i).x+8, gateList.get(i).y+8, 2, 2);
         }
     }
     
-    public void collision(Player p){        
+    public void collision(Entity e){        
         
         for(int i = 0; i < gateList.size(); i++){
-            if(p.getCenterBounds().intersects(gateList.get(i).getBounds())){
-                p.collisionGate(gateList.get(i));                
+            if(e.getCenterBounds().intersects(gateList.get(i).getBounds())){
+                e.collisionGate(gateList.get(i));                
             }
-        }
-        
+        }        
     }
-    
+
 }

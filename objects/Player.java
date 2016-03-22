@@ -3,37 +3,20 @@ package objects;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
-import javax.swing.ImageIcon;
-import pacman.Game;
-import pacman.GlobalPosition;
 
 
-public class Player extends GlobalPosition {
-    
-    private ImageLoader i = new ImageLoader();
-    private SpriteSheet ss;
-    private int frame;
-    int frameSpeed, frameNumber, startFrame, endFrame;
-    private int counterSS = 0;
-    private Image frameSS;
-    
-    private int centerX, centerY;
-    
-    private int velX, velY;
-    private int preVelX, preVelY;
-    
-    private int speed = 3;
+
+public class Player extends Entity {
     
     public Player(int x, int y){
-        super(x,y);
         
-        this.centerX = x+9-2;
-        this.centerY = y+9-2;
+        super(x,y);        
         
-        
+    }
+    
+    @Override
+    public void init(){
         startFrame = 8;
         endFrame = startFrame + 3;
         frameNumber = startFrame;
@@ -45,44 +28,25 @@ public class Player extends GlobalPosition {
         velX = -speed;
         preVelX = -speed;
         
-        ss = new SpriteSheet(i.load("/img/pacman_spritesheet.png"));
-    }        
+        ss = new SpriteSheet(i.load("/img/pacman_spritesheet.png"));    
+    }
     
+    @Override
     public void update(){
         x += velX;
         y += velY;
         
         //passagem pelo túnel
-        if(x < -35 && y > 300 && y < 310)
+        if(x < -35 && y > 290 && y < 310)
             x = 494;        
-        if(x > 510 && y > 300 && y < 310)
+        if(x > 510 && y > 290 && y < 310)
             x = -19;        
         
         this.Animation();
     }
+
     
-    public void collisionWall(){
-        
-        int tempVelX = velX;
-        int tempVelY = velY;
-        
-        if(velX != 0){
-            velX = 0;
-            if(tempVelX > 0)
-                x -= 4;
-            else
-                x += 4;
-            
-        } else if(velY != 0){
-            velY = 0;
-            if(tempVelY > 0)
-                    y -= 4;
-                else
-                    y += 4;
-        }
-        
-    }
-    
+    @Override
     public void collisionGate(Gate gate){     
         
         if(gate.up == false && velY < 0){
@@ -195,45 +159,13 @@ public class Player extends GlobalPosition {
         }   
     }
     
+    @Override
     public void draw(Graphics g2d){
-        g2d.drawImage(getPlayerImage(), x, y, null);
+        g2d.drawImage(getEntityImage(), x, y, null);
         g2d.setColor(Color.red);
         //g2d.drawRect(this.getBounds().x, this.getBounds().y, this.getBounds().width, this.getBounds().height);
         //g2d.drawRect(this.getCenterBounds().x, this.getCenterBounds().y, this.getCenterBounds().width, this.getCenterBounds().height);
         g2d.drawString("("+this.x+","+this.y+")", 100, 30);
     }
-    
-    public Image getPlayerImage(){
-        return frameSS;        
-    }
-    
-    public void Animation(){
-        
-        frameSS = ss.crop2(25*frameNumber, 0, 25, 25);
-        //System.out.println(counterSS);
-        
-        if(counterSS % frameSpeed == 0){
-            if(frameNumber < endFrame){
-                frameNumber++;
-            } else {
-                frameNumber = startFrame;
-            }   
-        }
-        
-        if(counterSS > 20*frameSpeed){
-            counterSS = 0;
-        }else {
-            counterSS++;
-        }   
-    }
-    
-    public Rectangle getBounds(){
-        Rectangle r = new Rectangle(this.x+3, this.y+3, 15, 15);
-        return r;
-    }
-    
-    public Rectangle getCenterBounds(){
-        Rectangle r = new Rectangle(this.x+7, this.y+7, 5, 5);
-        return r;
-    }
+
 }

@@ -38,7 +38,7 @@ public class Gate extends GlobalPosition {
     public void update(){}    
     
     public Rectangle getBounds(){
-        Rectangle r = new Rectangle(x+7, y+7, 3, 3);
+        Rectangle r = new Rectangle(x+9, y+9, 1, 1);
         return r;
     }   
 }
