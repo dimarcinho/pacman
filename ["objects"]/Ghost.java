@@ -30,49 +30,55 @@ public class Ghost extends Entity {
     public void init(){
     
         //state = 0;
-        startFrame = 4;
-        endFrame = startFrame + 1;
-        frameNumber = startFrame;
-        frameSpeed = 4; //quanto maior, mais lento
+        this.startFrame = 4;
+        this.endFrame = startFrame + 1;
+        this.frameNumber = startFrame;
+        this.frameSpeed = 4; //quanto maior, mais lento
         
         try{
         
             if(this.tipo == 0){
-                ss = new SpriteSheet(i.load("/img/gBlinky.png"));
-                System.out.println("Criado Blinky!"); 
+                this.ss = new SpriteSheet(i.load("/img/gBlinky.png"));
+                //System.out.println("Criado Blinky!"); 
             } else if(this.tipo == 1){
-                ss = new SpriteSheet(i.load("/img/gPinky.png"));
-                System.out.println("Criado Pinky!");
+                this.ss = new SpriteSheet(i.load("/img/gPinky.png"));
+                //System.out.println("Criado Pinky!");
             }else if(this.tipo == 2){
-                ss = new SpriteSheet(i.load("/img/gInky.png"));
-                System.out.println("Criado Inky!");
+                this.ss = new SpriteSheet(i.load("/img/gInky.png"));
+                //System.out.println("Criado Inky!");
             }else if(this.tipo == 3){
-                ss = new SpriteSheet(i.load("/img/gClyde.png"));
-                System.out.println("Criado Clyde!");
+                this.ss = new SpriteSheet(i.load("/img/gClyde.png"));
+                //System.out.println("Criado Clyde!");
             }
             
         }catch (Exception e){System.out.println("Erro na inicialização dos fantasmas: "+e);}
         
         
 
-        velX = -speed;
+        this.velX = -speed;
         //preVelX = -speed;
     }
     
     @Override
     public void update(){
-    
-        x += velX;
-        y += velY;
-        
-        
-        //passagem pelo túnel
-        if(x < -35 && y > 290 && y < 310)
-            x = 494;        
-        if(x > 510 && y > 290 && y < 310)
-            x = -19;
-        
-        this.Animation();
+
+        try{
+            this.x += velX;
+            this.y += velY;
+
+
+            //passagem pelo túnel
+            if(this.x < -35 && y > 290 && this.y < 310)
+                this.x = 494;        
+            if(this.x > 510 && y > 290 && this.y < 310)
+                this.x = -19;
+
+            this.Animation();
+            
+        } catch(NullPointerException s) {
+            //s.printStackTrace();
+            throw new IllegalStateException("Some Ghost has a null property", s);
+        }
         
     }
     
@@ -87,7 +93,7 @@ public class Ghost extends Entity {
             } else {
                 velX = -speed;
             }
-            preVelY = 0;
+            velY = 0;
         
         } else {
            if(e.y > this.y){

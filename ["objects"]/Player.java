@@ -20,30 +20,30 @@ public class Player extends Entity {
     
     @Override
     public void init(){
-        startFrame = 8;
-        endFrame = startFrame + 3;
-        frameNumber = startFrame;
-        frameSpeed = 4; //quanto maior, mais lento
+        this.startFrame = 8;
+        this.endFrame = startFrame + 3;
+        this.frameNumber = startFrame;
+        this.frameSpeed = 4; //quanto maior, mais lento
         
-        preVelX = 0;
-        preVelY = 0;
+        this.preVelX = 0;
+        this.preVelY = 0;
         
-        velX = -speed;
-        preVelX = -speed;
+        this.velX = -speed;
+        this.preVelX = -speed;
         
-        ss = new SpriteSheet(i.load("/img/pacman_spritesheet.png"));    
+        this.ss = new SpriteSheet(i.load("/img/pacman_spritesheet.png"));    
     }
     
     @Override
     public void update(){
-        x += velX;
-        y += velY;
+        this.x += this.velX;
+        this.y += this.velY;
         
         //passagem pelo túnel
-        if(x < -35 && y > 290 && y < 310)
-            x = 494;        
-        if(x > 510 && y > 290 && y < 310)
-            x = -19;        
+        if(this.x < -35 && y > 290 && this.y < 310)
+            this.x = 494;        
+        if(this.x > 510 && y > 290 && this.y < 310)
+            this.x = -19;        
         
         this.Animation();
     }
@@ -51,6 +51,10 @@ public class Player extends Entity {
     
     @Override
     public void collisionGate(Gate gate){     
+        
+        int tempVelX, tempVelY;
+        tempVelX = velX;
+        tempVelY = velY;
         
         if(gate.up == false && velY < 0){
             velY = 0;
@@ -88,16 +92,8 @@ public class Player extends Entity {
             velY = 0;
         }
         
-          
-        /*
-        System.out.println("Up: "+gate.up);
-        System.out.println("Left: "+gate.left);
-        System.out.println("Right: "+gate.right);
-        System.out.println("Down: "+gate.down);
-        System.out.println("");
-         * 
-         */
-        
+        if(tempVelX != velX || tempVelY != velY)
+            this.changeDirection();
     }
     
     public void keyPressed(KeyEvent e){
@@ -105,46 +101,24 @@ public class Player extends Entity {
         
         if(key == KeyEvent.VK_UP){
             
-            //velY = -speed;
             preVelY = -speed;
-            //velX = 0;
             preVelX = 0;
-            
-            startFrame = 4;
-            endFrame = startFrame + 3;
-            frameNumber = startFrame;
             
         } else if(key == KeyEvent.VK_DOWN) {
             
-            //velY = +speed;
             preVelY = +speed;
-            //velX = 0;
             preVelX = 0;
-            
-            startFrame = 12;
-            endFrame = startFrame + 3;
-            frameNumber = startFrame;
             
         } else if(key == KeyEvent.VK_LEFT) { 
             
-            //velX = -speed;
             preVelX = -speed;
-            //velY = 0;
             preVelY = 0;
-            
-            startFrame = 8;
-            endFrame = startFrame + 3;
-            frameNumber = startFrame;
-            
+
         } else if(key == KeyEvent.VK_RIGHT){
-            //velX = +speed;
+
             preVelX = +speed;
-            //velY = 0;
             preVelY = 0;
-            
-            startFrame = 0;
-            endFrame = startFrame + 3;
-            frameNumber = startFrame;
+
         }
     }
     
@@ -169,6 +143,29 @@ public class Player extends Entity {
         //g2d.drawRect(this.getBounds().x, this.getBounds().y, this.getBounds().width, this.getBounds().height);
         //g2d.drawRect(this.getCenterBounds().x, this.getCenterBounds().y, this.getCenterBounds().width, this.getCenterBounds().height);
         g2d.drawString("("+this.x+","+this.y+")", 100, 30);
+    }
+    
+    public void changeDirection(){
+        if(velX > 0){
+            startFrame = 0;
+            endFrame = startFrame + 3;
+            frameNumber = startFrame;    
+        }
+        if(velX < 0){
+            startFrame = 8;
+            endFrame = startFrame + 3;
+            frameNumber = startFrame;    
+        }
+        if(velY > 0){
+            startFrame = 12;
+            endFrame = startFrame + 3;
+            frameNumber = startFrame;    
+        }
+        if(velY < 0){
+            startFrame = 4;
+            endFrame = startFrame + 3;
+            frameNumber = startFrame;    
+        }
     }
 
 }
