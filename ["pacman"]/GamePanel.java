@@ -1,16 +1,19 @@
 
 package pacman;
 
+import gamestates.GameStateManager;
+import java.awt.event.KeyEvent;
 import objects.ImageLoader;
 import objects.Maze;
 import objects.SpriteSheet;
 import input.KeyInput;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
 import java.util.logging.Level;
@@ -27,14 +30,16 @@ import objects.PillController;
 import objects.Player;
 
 
-public class GamePanel extends JPanel implements ActionListener {
+public class GamePanel extends JPanel implements ActionListener, KeyListener {
     
     public Timer t;
     String background = "/img/maze.jpg";
     
+    public GameStateManager gsm;
+   
     private Image dbImage;
     private Graphics dbg;    
-    
+    /*
     public ImageLoader i = new ImageLoader();
     public SpriteSheet ss = new SpriteSheet(i.load("../img/maze_spritesheet2.png"));
     public Image imgTest;
@@ -49,11 +54,15 @@ public class GamePanel extends JPanel implements ActionListener {
     public GateController gc;
     public PillController pc;
     public GhostController ghosts;
+     * 
+     */
     
     public GamePanel(){
         
         setFocusable(true);
         
+        gsm = new GameStateManager();
+        /*
         maze = new Maze();
         dc = new DotController();        
         gc = new GateController();
@@ -76,9 +85,11 @@ public class GamePanel extends JPanel implements ActionListener {
         ghosts.addGhost(Pinky);
         ghosts.addGhost(Inky);
         ghosts.addGhost(Clyde);
+         * 
+         */
         
         
-        addKeyListener(new KeyInput(p));
+        //addKeyListener(new KeyAdapter());
         
         init();
                         
@@ -97,6 +108,7 @@ public class GamePanel extends JPanel implements ActionListener {
     }
     
     public void paintComponent(Graphics g){        
+        /*
         maze.draw(g);
         dc.draw(g);
         pc.draw(g);
@@ -105,8 +117,12 @@ public class GamePanel extends JPanel implements ActionListener {
         lifes.draw(g);
         
         ghosts.draw(g);
+         * 
+         */
         
         //gc.draw(g);
+        
+        gsm.draw(g);
     }
     
     public Image getBackgroundImage(){
@@ -119,6 +135,7 @@ public class GamePanel extends JPanel implements ActionListener {
         
         
         try{
+            /*
             p.update();   
 
             ghosts.update();
@@ -134,6 +151,10 @@ public class GamePanel extends JPanel implements ActionListener {
             gc.collision(Clyde);
             
             ghosts.collision(p, lifes);
+             * 
+             */
+            
+            gsm.update();
             
         } catch(NullPointerException s) {
             
@@ -143,6 +164,21 @@ public class GamePanel extends JPanel implements ActionListener {
         
         
         repaint();
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        gsm.keyPressed(e);
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        gsm.keyReleased(e);
     }
     
 }
