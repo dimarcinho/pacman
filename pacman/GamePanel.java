@@ -49,9 +49,6 @@ public class GamePanel extends JPanel implements ActionListener {
         
         setFocusable(true);
         
-        t = new Timer(20, this);
-        t.start();
-        
         maze = new Maze();
         dc = new DotController();        
         gc = new GateController();
@@ -61,12 +58,20 @@ public class GamePanel extends JPanel implements ActionListener {
         maze.createGates(gc);   
         
         
-        p = new Player(240, 465);        
-        Blinky = new Ghost(240, 250);//240,250
+        p = new Player(240, 465);
+        
+        Blinky = new Ghost(240, 250, 0);//240,250
+        Pinky = new Ghost(105, 69, 1);
+        Inky = new Ghost(465, 573, 2);
+        Clyde = new Ghost(321, 357, 3);
         
         addKeyListener(new KeyInput(p));
         
         init();
+                        
+        t = new Timer(20, this);
+        t.start();
+        
     }
     
     public void init(){}    
@@ -82,9 +87,14 @@ public class GamePanel extends JPanel implements ActionListener {
         maze.draw(g);
         dc.draw(g);
         pc.draw(g);
-        p.draw(g);        
+        p.draw(g);
+        
         Blinky.draw(g);
-        gc.draw(g);
+        Pinky.draw(g);
+        Inky.draw(g);
+        Clyde.draw(g);
+        
+        //gc.draw(g);
     }
     
     public Image getBackgroundImage(){
@@ -94,14 +104,34 @@ public class GamePanel extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {        
-        p.update();        
-        Blinky.update();
-        maze.update();
-        dc.eatDot(p);
-        pc.eatPill(p);
-        gc.collision(p);
-        //Blinky.chase(p);
-        gc.collision(Blinky);
+        
+        
+        try{
+            p.update();   
+
+            //Blinky.chase(p);
+            Blinky.update();
+            Pinky.update();
+            Inky.update();
+            Clyde.update();
+
+
+            maze.update();
+            dc.eatDot(p);
+            pc.eatPill(p);
+            gc.collision(p);
+
+            gc.collision(Blinky);
+            gc.collision(Pinky);
+            gc.collision(Inky);
+            gc.collision(Clyde);
+            
+        } catch(NullPointerException s) {
+            
+            //s.printStackTrace();
+            throw new IllegalStateException("Game has a null property", s);
+        }
+        
         
         repaint();
     }
