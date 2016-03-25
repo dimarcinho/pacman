@@ -17,7 +17,7 @@ public class Ghost extends Entity {
     
     private int chase = 0;
     
-    //private int state; //0 - scatter, 1 - chase, 2 - frightened
+    private int state; //0 - scatter, 1 - chase, 2 - frightened
     
     public Ghost(int x, int y, int tipo){
         this.x = x;
@@ -182,11 +182,14 @@ public class Ghost extends Entity {
     @Override
     public void draw(Graphics g){
         g.drawImage(getEntityImage(), x, y, null);
+        /*
         g.setColor(Color.yellow);
         g.fillRect( this.getCenterBounds().x,
                     this.getCenterBounds().y, 
                     this.getCenterBounds().width, 
                     this.getCenterBounds().height);
+         * 
+         */
     }
 
     public void changeDirection(){
