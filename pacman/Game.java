@@ -10,7 +10,7 @@ import javax.swing.JFrame;
 public class Game {
     
     public static final int WIDTH = 508;
-    public static final int HEIGHT = 666;
+    public static final int HEIGHT = 684;
     
     //usar tiles de 18 x 18
 

@@ -1,77 +1,42 @@
 
 package pacman;
 
-import objects.ImageLoader;
-import objects.Maze;
-import objects.SpriteSheet;
-import input.KeyInput;
-import java.awt.Color;
+import gamestates.GameStateManager;
+import java.awt.event.KeyEvent;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.FileNotFoundException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.awt.event.KeyListener;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
-import objects.DotController;
-import objects.GateController;
-import objects.Ghost;
-import objects.PillController;
-import objects.Player;
 
 
-public class GamePanel extends JPanel implements ActionListener {
+
+public class GamePanel extends JPanel implements ActionListener, KeyListener {
     
     public Timer t;
     String background = "/img/maze.jpg";
     
+    public GameStateManager gsm;
+   
     private Image dbImage;
     private Graphics dbg;    
-    
-    public ImageLoader i = new ImageLoader();
-    public SpriteSheet ss = new SpriteSheet(i.load("../img/maze_spritesheet2.png"));
-    public Image imgTest;
-    
-    public Player p;    
-    public Ghost Blinky, Pinky, Inky, Clyde;
-    
-    public Maze maze;
-    public DotController dc;    
-    public GateController gc;
-    public PillController pc;
     
     public GamePanel(){
         
         setFocusable(true);
         
-        maze = new Maze();
-        dc = new DotController();        
-        gc = new GateController();
-        pc = new PillController();
-        maze.createDots(dc);
-        maze.createPills(pc);        
-        maze.createGates(gc);   
+        gsm = new GameStateManager();
         
-        
-        p = new Player(240, 465);
-        
-        Blinky = new Ghost(240, 250, 0);//240,250
-        Pinky = new Ghost(105, 69, 1);
-        Inky = new Ghost(465, 573, 2);
-        Clyde = new Ghost(321, 357, 3);
-        
-        addKeyListener(new KeyInput(p));
+        addKeyListener(this);
         
         init();
                         
         t = new Timer(20, this);
         t.start();
-        
+
     }
     
     public void init(){}    
@@ -84,17 +49,8 @@ public class GamePanel extends JPanel implements ActionListener {
     }
     
     public void paintComponent(Graphics g){        
-        maze.draw(g);
-        dc.draw(g);
-        pc.draw(g);
-        p.draw(g);
         
-        Blinky.draw(g);
-        Pinky.draw(g);
-        Inky.draw(g);
-        Clyde.draw(g);
-        
-        //gc.draw(g);
+        gsm.draw(g);
     }
     
     public Image getBackgroundImage(){
@@ -107,24 +63,8 @@ public class GamePanel extends JPanel implements ActionListener {
         
         
         try{
-            p.update();   
-
-            //Blinky.chase(p);
-            Blinky.update();
-            Pinky.update();
-            Inky.update();
-            Clyde.update();
-
-
-            maze.update();
-            dc.eatDot(p);
-            pc.eatPill(p);
-            gc.collision(p);
-
-            gc.collision(Blinky);
-            gc.collision(Pinky);
-            gc.collision(Inky);
-            gc.collision(Clyde);
+           
+            gsm.update();
             
         } catch(NullPointerException s) {
             
@@ -134,6 +74,19 @@ public class GamePanel extends JPanel implements ActionListener {
         
         
         repaint();
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {}
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        gsm.keyPressed(e);
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        gsm.keyReleased(e);
     }
     
 }
