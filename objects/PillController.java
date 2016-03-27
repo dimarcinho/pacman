@@ -35,8 +35,11 @@ public class PillController {
     
     public void eatPill(Player p){
         for(int i=0; i< pillList.size(); i++){
-            if(p.getBounds().intersects(pillList.get(i).getBounds()))
+            if(p.getBounds().intersects(pillList.get(i).getBounds())){
                 pillList.remove(pillList.get(i));
+                p.score.addPoints(50);
+                //System.out.println("Pills: "+pillList.size());
+            }
         }
     }    
     

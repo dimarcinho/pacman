@@ -31,9 +31,14 @@ public class DotController {
     }
     
     public void eatDot(Player p){
-        for(int i=0; i< dotList.size(); i++){
-            if(p.getBounds().intersects(dotList.get(i).getBounds()))
-                dotList.remove(dotList.get(i));
+        if(dotList.size()!=0){
+            for(int i=0; i< dotList.size(); i++){
+                if(p.getBounds().intersects(dotList.get(i).getBounds())){
+                    dotList.remove(dotList.get(i));
+                    p.score.addPoints(10);
+                    //System.out.println("Dots: "+dotList.size());
+                }
+            }
         }
     }
 }

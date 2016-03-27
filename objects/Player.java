@@ -9,38 +9,71 @@ import java.awt.event.KeyEvent;
 
 public class Player extends Entity {
     
+    public Lifes lifes;
+    public boolean lostLife = false;
+    public int direction = 3; //0-uo, 1-right, 2-down, 3-left
+    
+    public Score score;
+    
     public Player(int x, int y){
         
-        super(x,y);        
+       this.x = x;
+       this.y = y;
+       
+       init();
         
     }
     
     @Override
     public void init(){
-        startFrame = 8;
-        endFrame = startFrame + 3;
-        frameNumber = startFrame;
-        frameSpeed = 4; //quanto maior, mais lento
+        this.startFrame = 8;
+        this.endFrame = startFrame + 3;
+        this.frameNumber = startFrame;
+        this.frameSpeed = 4; //quanto maior, mais lento
         
-        preVelX = 0;
-        preVelY = 0;
+        this.preVelX = 0;
+        this.preVelY = 0;
         
-        velX = -speed;
-        preVelX = -speed;
+        this.velX = -speed;
+        this.preVelX = -speed;
         
-        ss = new SpriteSheet(i.load("/img/pacman_spritesheet.png"));    
+        this.ss = new SpriteSheet(i.load("/img/pacman_spritesheet.png"));    
+        
+        lifes = new Lifes();
+        score = new Score();
+        
+    }
+    
+    public void reset(){
+        
+        this.velX = 0;
+        this.velY = 0;
+        
+        this.x = 240;
+        this.y = 465;
+        
+        this.preVelX = 0;
+        this.preVelY = 0;
+        
+        this.startFrame = 8;
+        this.endFrame = startFrame + 3;
+        this.frameNumber = startFrame;
+        this.frameSpeed = 4; //quanto maior, mais lento
+       
+        this.velX = -speed;
+        this.preVelX = -speed;        
     }
     
     @Override
     public void update(){
-        x += velX;
-        y += velY;
+        this.x += this.velX;
+        this.y += this.velY;
         
         //passagem pelo túnel
-        if(x < -35 && y > 290 && y < 310)
-            x = 494;        
-        if(x > 510 && y > 290 && y < 310)
-            x = -19;        
+        if(this.x < -35 && y > 290 && this.y < 310)
+            this.x = 494;        
+        if(this.x > 510 && y > 290 && this.y < 310)
+            this.x = -19;        
         
         this.Animation();
     }
@@ -48,6 +81,10 @@ public class Player extends Entity {
     
     @Override
     public void collisionGate(Gate gate){     
+        
+        int tempVelX, tempVelY;
+        tempVelX = velX;
+        tempVelY = velY;
         
         if(gate.up == false && velY < 0){
             velY = 0;
@@ -85,16 +122,8 @@ public class Player extends Entity {
             velY = 0;
         }
         
-          
-        /*
-        System.out.println("Up: "+gate.up);
-        System.out.println("Left: "+gate.left);
-        System.out.println("Right: "+gate.right);
-        System.out.println("Down: "+gate.down);
-        System.out.println("");
-         * 
-         */
-        
+        if(tempVelX != velX || tempVelY != velY)
+            this.changeDirection();
     }
     
     public void keyPressed(KeyEvent e){
@@ -102,46 +131,24 @@ public class Player extends Entity {
         
         if(key == KeyEvent.VK_UP){
             
-            //velY = -speed;
             preVelY = -speed;
-            //velX = 0;
             preVelX = 0;
-            
-            startFrame = 4;
-            endFrame = startFrame + 3;
-            frameNumber = startFrame;
             
         } else if(key == KeyEvent.VK_DOWN) {
             
-            //velY = +speed;
             preVelY = +speed;
-            //velX = 0;
             preVelX = 0;
-            
-            startFrame = 12;
-            endFrame = startFrame + 3;
-            frameNumber = startFrame;
             
         } else if(key == KeyEvent.VK_LEFT) { 
             
-            //velX = -speed;
             preVelX = -speed;
-            //velY = 0;
             preVelY = 0;
-            
-            startFrame = 8;
-            endFrame = startFrame + 3;
-            frameNumber = startFrame;
-            
+
         } else if(key == KeyEvent.VK_RIGHT){
-            //velX = +speed;
+
             preVelX = +speed;
-            //velY = 0;
             preVelY = 0;
-            
-            startFrame = 0;
-            endFrame = startFrame + 3;
-            frameNumber = startFrame;
+
         }
     }
     
@@ -160,12 +167,22 @@ public class Player extends Entity {
     }
     
     @Override
-    public void draw(Graphics g2d){
-        g2d.drawImage(getEntityImage(), x, y, null);
-        g2d.setColor(Color.red);
-        //g2d.drawRect(this.getBounds().x, this.getBounds().y, this.getBounds().width, this.getBounds().height);
-        //g2d.drawRect(this.getCenterBounds().x, this.getCenterBounds().y, this.getCenterBounds().width, this.getCenterBounds().height);
-        g2d.drawString("("+this.x+","+this.y+")", 100, 30);
+    public void draw(Graphics g){
+        g.drawImage(getEntityImage(), x, y, null);
+        g.setColor(Color.red);
+        //g.drawRect(this.getBounds().x, this.getBounds().y, this.getBounds().width, this.getBounds().height);
+        //g.drawRect(this.getCenterBounds().x, this.getCenterBounds().y, this.getCenterBounds().width, this.getCenterBounds().height);
+        g.drawString("("+this.x+","+this.y+")", 250, 630);
+        
+        lifes.draw(g);
+        score.draw(g);
     }
+    
+    public void loseLife(){
+        lifes.removeLife();
+        System.out.println("Perdeu uma vida!");        
+        lostLife = true;
+    }
+    
 
 }

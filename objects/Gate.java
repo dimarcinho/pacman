@@ -33,7 +33,6 @@ public class Gate extends GlobalPosition {
     }
     
      
-     
     public void init(){}
     public void update(){}    
     

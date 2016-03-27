@@ -27,15 +27,43 @@ public class GateController {
         
         for(int i = 0; i < gateList.size(); i++){
             g.setColor(Color.red);
-            //g.fillRect(gateList.get(i).x+8, gateList.get(i).y+8, 2, 2);
+            g.drawRect( gateList.get(i).getBounds().x,
+                        gateList.get(i).getBounds().y,
+                        gateList.get(i).getBounds().width,
+                        gateList.get(i).getBounds().height);
         }
     }
     
-    public void collision(Entity e){        
+    public void collision(Entity e){
         
         for(int i = 0; i < gateList.size(); i++){
             if(e.getCenterBounds().intersects(gateList.get(i).getBounds())){
-                e.collisionGate(gateList.get(i));                
+                e.collisionGate(gateList.get(i));
+                e.setGatePos(gateList.get(i));
+            }
+        }        
+    }
+    
+    public void GhostChasing(Ghost e, Player p, Ghost b){        
+        
+        for(int i = 0; i < gateList.size(); i++){
+            if(e.getCenterBounds().intersects(gateList.get(i).getBounds())){
+                if(e.tipo == 0)
+                    e.chaseBlinky(p, b);
+                if(e.tipo == 1)
+                    e.chasePinky(p, b);
+                if(e.tipo == 2)
+                    e.chaseInky(p, b);
+                if(e.tipo == 3)
+                    e.chaseClyde(p, b);
+            }
+        }        
+    }
+    public void GhostScattering(Ghost e){        
+        
+        for(int i = 0; i < gateList.size(); i++){
+            if(e.getCenterBounds().intersects(gateList.get(i).getBounds())){
+                e.Scatter();                
             }
         }        
     }
