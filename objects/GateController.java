@@ -67,5 +67,46 @@ public class GateController {
             }
         }        
     }
+    
+    public void GhostMove(Ghost e, Player p, Ghost b){        
+        
+        for(Gate gate : gateList){
+            if(e.getCenterBounds().intersects(gate.getBounds())){
+                switch(e.state){
+                    default: System.out.println("Erro em GhostMove()"); break;
+                    case 0:
+                        //scatter
+                        e.Scatter();
+                        break;
+                    case 1:
+                        //chase
+                        if(e.tipo == 0)
+                            e.chaseBlinky(p, b);
+                        if(e.tipo == 1)
+                            e.chasePinky(p, b);
+                        if(e.tipo == 2)
+                            e.chaseInky(p, b);
+                        if(e.tipo == 3)
+                            e.chaseClyde(p, b);
+                        break;
+                    case 2:
+                        //frightened
+                        e.Frightened();
+                        break;
+                    case 3:
+                        //dead
+                        e.Dead();
+                        break;
+                }
+            }
+        }
+        
+        for(int i = 0; i < gateList.size(); i++){
+            if(e.getCenterBounds().intersects(gateList.get(i).getBounds())){
+                
+                
+            }
+        }        
+    }
 
 }

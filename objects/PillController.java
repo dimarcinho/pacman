@@ -33,14 +33,23 @@ public class PillController {
         }
     }
     
-    public void eatPill(Player p){
+    public void eatPill(Player p, GhostController ghosts){
         for(int i=0; i< pillList.size(); i++){
             if(p.getBounds().intersects(pillList.get(i).getBounds())){
                 pillList.remove(pillList.get(i));
                 p.score.addPoints(50);
+                this.FrightGhosts(ghosts);
                 //System.out.println("Pills: "+pillList.size());
             }
         }
-    }    
+    }
+
+    public void FrightGhosts(GhostController gc){
+        for(Ghost i : gc.ghostList){
+            if(i.state != 3)
+                i.setState(2);
+        }
+            
+    }
     
 }

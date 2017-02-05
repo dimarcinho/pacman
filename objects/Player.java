@@ -11,7 +11,9 @@ public class Player extends Entity {
     
     public Lifes lifes;
     public boolean lostLife = false;
-    public int direction = 3; //0-uo, 1-right, 2-down, 3-left
+    public int direction = 3; //0-up, 1-right, 2-down, 3-left
+    
+    private int x0, y0;
     
     public Score score;
     
@@ -19,6 +21,9 @@ public class Player extends Entity {
         
        this.x = x;
        this.y = y;
+       
+       this.x0 = x;
+       this.y0 = y;
        
        init();
         
@@ -29,7 +34,7 @@ public class Player extends Entity {
         this.startFrame = 8;
         this.endFrame = startFrame + 3;
         this.frameNumber = startFrame;
-        this.frameSpeed = 4; //quanto maior, mais lento
+        this.frameSpeed = 5; //quanto maior, mais lento
         
         this.preVelX = 0;
         this.preVelY = 0;
@@ -49,8 +54,8 @@ public class Player extends Entity {
         this.velX = 0;
         this.velY = 0;
         
-        this.x = 240;
-        this.y = 465;
+        this.x = x0;
+        this.y = y0;
         
         this.preVelX = 0;
         this.preVelY = 0;
@@ -180,9 +185,6 @@ public class Player extends Entity {
     
     public void loseLife(){
         lifes.removeLife();
-        System.out.println("Perdeu uma vida!");        
         lostLife = true;
     }
-    
-
 }

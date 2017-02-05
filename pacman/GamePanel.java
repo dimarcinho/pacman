@@ -22,11 +22,14 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     public GameStateManager gsm;
    
     private Image dbImage;
-    private Graphics dbg;    
+    private Graphics dbg;
+    private int FPS;
     
     public GamePanel(){
         
         setFocusable(true);
+        
+        FPS = 45;
         
         gsm = new GameStateManager();
         
@@ -34,7 +37,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
         
         init();
                         
-        t = new Timer(20, this);
+        t = new Timer(1, this);
         t.start();
 
     }
@@ -64,7 +67,14 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
         
         try{
            
-            gsm.update();
+            long startTime, endTime;
+            startTime = System.currentTimeMillis();        
+            gsm.update();            
+            endTime = System.currentTimeMillis();
+            while(endTime - startTime < 1000/FPS ){
+                endTime = System.currentTimeMillis();    
+            }
+            
             
         } catch(NullPointerException s) {
             

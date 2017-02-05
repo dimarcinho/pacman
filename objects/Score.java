@@ -7,10 +7,10 @@ import java.awt.Graphics;
 
 public class Score {
 
-    private long points;
+    public static long points = 0;
     
     public Score(){
-        points = 0;
+        //points = 0;
     }
     
     public void init(){}
@@ -25,6 +25,10 @@ public class Score {
     
     public void addPoints(int k){
         points += k;
+    }
+    
+    public long getPoints() {
+        return points;
     }
 
 }
